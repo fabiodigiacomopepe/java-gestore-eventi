@@ -13,7 +13,7 @@ public class ProgrammEventi {
         this.titolo = titolo;
         this.eventi = new ArrayList<>();
     }
-    
+
     public String getTitolo() {
         return titolo;
     }
@@ -43,10 +43,23 @@ public class ProgrammEventi {
 
     @Override
     public String toString() {
-        String listaProgrammi = "";
-        for (Evento evento : eventi) {
-            listaProgrammi += evento.getData() + " - " + evento.getTitolo() + "\n";
+        // Creo oggetto StrinBuilder per costruire la stringa
+        StringBuilder stringaFinale = new StringBuilder();
+        // Aooendo il titolo e vado a capo
+        stringaFinale.append(getTitolo()).append("\n");
+        // Duplico la lista di eventi esistente
+        List<Evento> eventiOrdinati = new ArrayList<>(eventi);
+        // Riordino gli eventi in base alla data con metodo sort utilizzando lambda/compareTo() che ritorna:
+        // valore negativo se la data di evento1 è < della data di evento2
+        // valore positivo se la data di evento1 è > della data di evento2
+        // zero se le date sono uguali
+        eventiOrdinati.sort((evento1, evento2) -> evento1.getData().compareTo(evento2.getData()));
+        // Ciclo sull'ArrayList
+        for (Evento evento : eventiOrdinati) {
+            // Aggiungo alla stringa finale data - titolo di ogni evento
+            stringaFinale.append(evento.getData()).append(" - ").append(evento.getTitolo()).append("\n");
         }
-        return listaProgrammi;
+        // Ritorno la stringa
+        return stringaFinale.toString();
     }
 }

@@ -16,12 +16,15 @@ public class Main {
         LocalTime orarioConvertito = LocalTime.parse(orario, formato);
         String prezzoConcerto = "56";
         BigDecimal prezzoConvertito = new BigDecimal(prezzoConcerto);
-        Concerto concerto = new Concerto("Concerto Metallica", "2024-08-20", 5000, orarioConvertito, prezzoConvertito);
-        System.out.println(concerto);
+        Concerto concerto1 = new Concerto("Concerto Metallica", "2024-08-20", 5000, orarioConvertito, prezzoConvertito);
+        Evento eventoSagra = new Evento("Sagra Salsiccia", "2024-06-10", 200);
+        Concerto concerto2 = new Concerto("Concerto Iron Maiden", "2024-07-02", 4300, orarioConvertito, prezzoConvertito);
+        System.out.println(concerto1 + "\n");
 
-        ProgrammEventi programmEventi = new ProgrammEventi("Programma1");
-        programmEventi.aggiungiEvento(concerto);
-        System.out.println(programmEventi.getTitolo());
+        ProgrammEventi programmEventi = new ProgrammEventi("Programma Estivo");
+        programmEventi.aggiungiEvento(concerto1);
+        programmEventi.aggiungiEvento(eventoSagra);
+        programmEventi.aggiungiEvento(concerto2);
         System.out.println(programmEventi);
 
         // Chiedo a utente dati dell'evento da inserire
@@ -39,6 +42,8 @@ public class Main {
         System.out.println("Titolo evento: " + evento.getTitolo() + "\n" +
                 "Data evento: " + evento.getData() + "\n" +
                 "Numero posti totale: " + evento.getNumero_posti_totale());
+
+        programmEventi.aggiungiEvento(evento);
 
         // Chiedo all'utente cosa vuole fare
         boolean exit = false;
@@ -97,6 +102,8 @@ public class Main {
                     break;
             }
         }
+
+        System.out.println(programmEventi);
 
         // Chiudo lo scanner da tastiera
         scan.close();
