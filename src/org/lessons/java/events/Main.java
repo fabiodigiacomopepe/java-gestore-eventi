@@ -19,6 +19,11 @@ public class Main {
         Concerto concerto = new Concerto("Concerto Metallica", "2024-08-20", 5000, orarioConvertito, prezzoConvertito);
         System.out.println(concerto);
 
+        ProgrammEventi programmEventi = new ProgrammEventi("Programma1");
+        programmEventi.aggiungiEvento(concerto);
+        System.out.println(programmEventi.getTitolo());
+        System.out.println(programmEventi);
+
         // Chiedo a utente dati dell'evento da inserire
         System.out.println("Inserisci un nuovo evento");
         System.out.print("Inserisci titolo: ");
