@@ -1,12 +1,13 @@
 package org.lessons.java.events;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NumberFormatException {
         // Inizializzo lo scanner da tastiera
         Scanner scan = new Scanner(System.in);
 
@@ -31,11 +32,41 @@ public class Main {
         System.out.println("Inserisci un nuovo evento");
         System.out.print("Inserisci titolo: ");
         String titolo = scan.nextLine();
-        System.out.print("Inserisci data nel formato yyyy-MM-dd: ");
-        String data = scan.nextLine();
-        System.out.print("Inserisci numero posti totale: ");
-        String numeroPostiTotaleString = scan.nextLine();
-        int numeroPostiTotale = Integer.parseInt(numeroPostiTotaleString);
+
+        String data = null;
+        boolean exitData = false;
+        while (!exitData) {
+            System.out.print("Inserisci data nel formato yyyy-MM-dd: ");
+            data = scan.nextLine();
+            if (!data.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                System.out.println("Inserire la data nel formato yyyy-MM-dd.");
+            } else {
+                LocalDate localDate = LocalDate.now();
+                LocalDate data_da_inserire = LocalDate.parse(data);
+                if (data_da_inserire.isBefore(localDate)) {
+                    System.out.println("La data inserita è già passata.");
+                } else {
+                    exitData = true;
+                }
+            }
+        }
+
+        int numeroPostiTotale = 0;
+        boolean exitPosti = false;
+        while (!exitPosti) {
+            System.out.print("Inserisci numero posti totale: ");
+            String numeroPostiTotaleString = scan.nextLine();
+            try {
+                numeroPostiTotale = Integer.parseInt(numeroPostiTotaleString);
+                if (numeroPostiTotale <= 0) {
+                    System.out.println("Inserire un numero positivo.");
+                } else {
+                    exitPosti = true;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Inserire un numero.");
+            }
+        }
 
         // Istanzio un nuovo evento con i dati forniti
         Evento evento = new Evento(titolo, data, numeroPostiTotale);
@@ -50,7 +81,7 @@ public class Main {
         while (!exit) {
             System.out.println("Vuoi fare qualche operazione? S/N");
             System.out.print("Risposta: ");
-            String sceltaOperazioni = scan.nextLine();
+            String sceltaOperazioni = scan.nextLine().toUpperCase();
             switch (sceltaOperazioni) {
                 case "S":
                     System.out.println("Scegli un'operazione");
@@ -60,31 +91,41 @@ public class Main {
                     String sceltaPrenotaDisdici = scan.nextLine();
                     switch (sceltaPrenotaDisdici) {
                         case "1":
-                            System.out.print("Inserisci n. posti da prenotare: ");
-                            String postiPrenotareString = scan.nextLine();
-                            int postiPrenotare = Integer.parseInt(postiPrenotareString);
-                            try {
-                                if (postiPrenotare <= 0) {
-                                    throw new IllegalArgumentException("Il numero di posti da prenotare non può essere negativo.");
+                            boolean exitPostiPrenotare = false;
+                            while (!exitPostiPrenotare) {
+                                System.out.print("Inserisci n. posti da prenotare: ");
+                                String postiPrenotareString = scan.nextLine();
+                                try {
+                                    int postiPrenotare = Integer.parseInt(postiPrenotareString);
+                                    if (postiPrenotare <= 0) {
+                                        System.out.println("Il numero di posti da prenotare non può essere negativo.");
+                                    } else {
+                                        evento.prenota(postiPrenotare);
+                                        exitPostiPrenotare = true;
+                                    }
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Inserire un numero.");
                                 }
-                                evento.prenota(postiPrenotare);
-                            } catch (IllegalArgumentException e) {
-                                System.out.println(e.getMessage());
                             }
                             System.out.println("Numero posti PRENOTATI: " + evento.getNumero_posti_prenotati() + "\n" +
                                     "Numero posti DISPONIBILI: " + evento.getNumero_posti_totale());
                             break;
                         case "2":
-                            System.out.print("Inserisci n. posti da disdire: ");
-                            String postiDisdireString = scan.nextLine();
-                            int postiDisdire = Integer.parseInt(postiDisdireString);
-                            try {
-                                if (postiDisdire <= 0) {
-                                    throw new IllegalArgumentException("Il numero di posti da disdire non può essere negativo.");
+                            boolean exitPostiDisdire = false;
+                            while (!exitPostiDisdire) {
+                                System.out.print("Inserisci n. posti da disdire: ");
+                                String postiDisdireString = scan.nextLine();
+                                try {
+                                    int postiDisdire = Integer.parseInt(postiDisdireString);
+                                    if (postiDisdire <= 0) {
+                                        System.out.println("Il numero di posti da disdire non può essere negativo.");
+                                    } else {
+                                        evento.disdici(postiDisdire);
+                                        exitPostiDisdire = true;
+                                    }
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Inserire un numero.");
                                 }
-                                evento.disdici(postiDisdire);
-                            } catch (IllegalArgumentException e) {
-                                System.out.println(e.getMessage());
                             }
                             System.out.println("Numero posti PRENOTATI: " + evento.getNumero_posti_prenotati() + "\n" +
                                     "Numero posti DISPONIBILI: " + evento.getNumero_posti_totale());
