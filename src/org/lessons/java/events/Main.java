@@ -1,11 +1,23 @@
 package org.lessons.java.events;
 
+import java.math.BigDecimal;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         // Inizializzo lo scanner da tastiera
         Scanner scan = new Scanner(System.in);
+
+        // Creo e istanzio un nuovo oggetto Concerto
+        String orario = "21.10";
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH.mm");
+        LocalTime orarioConvertito = LocalTime.parse(orario, formato);
+        String prezzoConcerto = "56";
+        BigDecimal prezzoConvertito = new BigDecimal(prezzoConcerto);
+        Concerto concerto = new Concerto("Concerto Metallica", "2024-08-20", 5000, orarioConvertito, prezzoConvertito);
+        System.out.println(concerto);
 
         // Chiedo a utente dati dell'evento da inserire
         System.out.println("Inserisci un nuovo evento");
