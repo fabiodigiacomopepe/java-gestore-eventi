@@ -1,0 +1,88 @@
+package org.lessons.java.events;
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        // Inizializzo lo scanner da tastiera
+        Scanner scan = new Scanner(System.in);
+
+        // Chiedo a utente dati dell'evento da inserire
+        System.out.println("Inserisci un nuovo evento");
+        System.out.print("Inserisci titolo: ");
+        String titolo = scan.nextLine();
+        System.out.print("Inserisci data nel formato yyyy-MM-dd: ");
+        String data = scan.nextLine();
+        System.out.print("Inserisci numero posti totale: ");
+        String numeroPostiTotaleString = scan.nextLine();
+        int numeroPostiTotale = Integer.parseInt(numeroPostiTotaleString);
+
+        // Istanzio un nuovo evento con i dati forniti
+        Evento evento = new Evento(titolo, data, numeroPostiTotale);
+        System.out.println("Titolo evento: " + evento.getTitolo() + "\n" +
+                "Data evento: " + evento.getData() + "\n" +
+                "Numero posti totale: " + evento.getNumero_posti_totale());
+
+        // Chiedo all'utente cosa vuole fare
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("Vuoi fare qualche operazione? S/N");
+            System.out.print("Risposta: ");
+            String sceltaOperazioni = scan.nextLine();
+            switch (sceltaOperazioni) {
+                case "S":
+                    System.out.println("Scegli un'operazione");
+                    System.out.println("1 - Prenota");
+                    System.out.println("2 - Disdici");
+                    System.out.print("Risposta: ");
+                    String sceltaPrenotaDisdici = scan.nextLine();
+                    switch (sceltaPrenotaDisdici) {
+                        case "1":
+                            System.out.print("Inserisci n. posti da prenotare: ");
+                            String postiPrenotareString = scan.nextLine();
+                            int postiPrenotare = Integer.parseInt(postiPrenotareString);
+                            try {
+                                if (postiPrenotare <= 0) {
+                                    throw new IllegalArgumentException("Il numero di posti da prenotare non può essere negativo.");
+                                }
+                                evento.prenota(postiPrenotare);
+                            } catch (IllegalArgumentException e) {
+                                System.out.println(e.getMessage());
+                            }
+                            System.out.println("Numero posti PRENOTATI: " + evento.getNumero_posti_prenotati() + "\n" +
+                                    "Numero posti DISPONIBILI: " + evento.getNumero_posti_totale());
+                            break;
+                        case "2":
+                            System.out.print("Inserisci n. posti da disdire: ");
+                            String postiDisdireString = scan.nextLine();
+                            int postiDisdire = Integer.parseInt(postiDisdireString);
+                            try {
+                                if (postiDisdire <= 0) {
+                                    throw new IllegalArgumentException("Il numero di posti da disdire non può essere negativo.");
+                                }
+                                evento.disdici(postiDisdire);
+                            } catch (IllegalArgumentException e) {
+                                System.out.println(e.getMessage());
+                            }
+                            System.out.println("Numero posti PRENOTATI: " + evento.getNumero_posti_prenotati() + "\n" +
+                                    "Numero posti DISPONIBILI: " + evento.getNumero_posti_totale());
+                            break;
+                        default:
+                            System.out.println("Scelta non valida.");
+                            break;
+                    }
+                    break;
+                case "N":
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("Scelta non valida.");
+                    break;
+            }
+        }
+
+        // Chiudo lo scanner da tastiera
+        scan.close();
+
+    }
+}

@@ -71,7 +71,7 @@ public class Evento {
     }
 
     // METODI
-    public int prenota(int posti_da_prenotare) {
+    public void prenota(int posti_da_prenotare) throws IllegalArgumentException {
         LocalDate localDate = LocalDate.now();
         LocalDate data_inserita = LocalDate.parse(data);
         try {
@@ -82,13 +82,13 @@ public class Evento {
                 throw new IllegalArgumentException("Non puoi prenotare più posti di quelli disponibili.");
             }
             numero_posti_prenotati += posti_da_prenotare;
+            numero_posti_totale -= posti_da_prenotare;
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
-        return numero_posti_prenotati;
     }
 
-    public int disdici(int posti_da_rimuovere) {
+    public void disdici(int posti_da_rimuovere) throws IllegalArgumentException {
         LocalDate localDate = LocalDate.now();
         LocalDate data_inserita = LocalDate.parse(data);
         try {
@@ -99,10 +99,10 @@ public class Evento {
                 throw new IllegalArgumentException("Non puoi disdire più posti di quelli prenotati.");
             }
             numero_posti_prenotati -= posti_da_rimuovere;
+            numero_posti_totale += posti_da_rimuovere;
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
-        return numero_posti_prenotati;
     }
 
     @Override
