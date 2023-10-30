@@ -17,14 +17,18 @@ public class Evento {
 
         // Controllo se la data è già passata
         LocalDate localDate = LocalDate.now();
-        LocalDate data_da_inserire = LocalDate.parse(data);
-        try {
-            if (data_da_inserire.isBefore(localDate)) {
-                throw new IllegalArgumentException("La data dell'evento è già passata.");
+        if (!data.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            throw new IllegalArgumentException("Inserire la data nel formato yyyy-MM-dd.");
+        } else {
+            LocalDate data_da_inserire = LocalDate.parse(data);
+            try {
+                if (data_da_inserire.isBefore(localDate)) {
+                    throw new IllegalArgumentException("La data dell'evento è già passata.");
+                }
+                this.data = data;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
-            this.data = data;
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
         }
 
         // Controllo se il numero di posti totali è positivo
@@ -55,10 +59,22 @@ public class Evento {
         return data;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setData(String data) throws IllegalArgumentException {
+        LocalDate localDate = LocalDate.now();
+        if (!data.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            throw new IllegalArgumentException("Inserire la data nel formato yyyy-MM-dd.");
+        } else {
+            LocalDate data_da_inserire = LocalDate.parse(data);
+            try {
+                if (data_da_inserire.isBefore(localDate)) {
+                    throw new IllegalArgumentException("La data dell'evento è già passata.");
+                }
+                this.data = data;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
-
 
     // NUMERO POSTI TOTALI
     public int getNumero_posti_totale() {
